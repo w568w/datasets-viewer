@@ -6,6 +6,11 @@
   "engines": {
     "vscode": "^1.87.0"
   },
+  "publisher": "w568w",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/w568w/datasets-viewer.git"
+  },
   "categories": [
     "Other"
   ],
@@ -31,13 +36,13 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
+    "vscode:prepublish": "yarn run package",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "lint": "eslint src --ext ts"
   },
   "devDependencies": {
