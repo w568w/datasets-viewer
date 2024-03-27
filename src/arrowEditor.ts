@@ -66,6 +66,8 @@ class ArrowDatasetDocument extends Disposable implements vscode.CustomDocument {
       return this.parseData(data.toArray());
     } else if (isSpecialArray(data)) {
       return this.parseData(Array.from(data));
+    } else if (typeof data === "bigint") {
+      return new Number(data); // FIXME: BigInt is not supported in JSON
     }
     return data;
   }
