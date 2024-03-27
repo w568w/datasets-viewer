@@ -4,7 +4,7 @@ All notable changes to the "datasets-viewer" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.0.3] - 2024-03-27
 
 ### Added
 
