@@ -153,6 +153,9 @@ export class ArrorDatasetViewerProvider
       ArrorDatasetViewerProvider.viewType,
       new ArrorDatasetViewerProvider(context),
       {
+        webviewOptions: {
+          retainContextWhenHidden: true,
+        },
         supportsMultipleEditorsPerDocument: false,
       },
     );

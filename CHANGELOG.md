@@ -6,9 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-### New
+### Added
 
 - Auto collapse when the field is too long
+
+### Changed
+
+- Keep webview alive when switching between tabs to avoid reloading
 
 ### Fixed
 
