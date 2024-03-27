@@ -1,8 +1,8 @@
 {
   "name": "datasets-viewer",
-  "displayName": "datasets-viewer",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "Datasets Viewer",
+  "description": "A fast and efficient way to view Huggingface datasets in VS Code.",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.87.0"
   },
@@ -11,18 +11,19 @@
     "type": "git",
     "url": "https://github.com/w568w/datasets-viewer.git"
   },
+  "bugs": {
+    "url": "https://github.com/w568w/datasets-viewer/issues",
+    "email": "w568w@outlook.com"
+  },
+  "homepage": "https://github.com/w568w/datasets-viewer/blob/main/README.md",
   "categories": [
-    "Other"
+    "Data Science",
+    "Machine Learning",
+    "Visualization"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "datasets-viewer.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "customEditors": [
       {
         "viewType": "datasets-viewer.arrow",
