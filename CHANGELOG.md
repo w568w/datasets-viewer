@@ -6,9 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### New
+
+- Auto collapse when the field is too long
+
 ### Fixed
 
 - Unable to show data with BigInt type (Temporary fix)
+- Unable to go the previous page when the current page is beyond the last page
 
 ## [0.0.2] - 2024-03-27
 

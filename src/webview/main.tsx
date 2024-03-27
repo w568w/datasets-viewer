@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   VSCodeButton,
   VSCodeDataGrid,
   VSCodeDataGridCell,
   VSCodeDataGridRow,
   VSCodeTag,
+  VSCodeTextArea,
 } from "@vscode/webview-ui-toolkit/react";
 import { createRoot } from "react-dom/client";
 import { DatasetColumn, DatasetRow } from "../message.js";
@@ -16,6 +17,20 @@ const App = () => {
   const [pageNum, setPageNum] = useState(0);
   const [data, setData] = useState<DatasetRow[]>([]);
 
+  const jsonifiedData = useMemo(() => {
+    return data.map((row) => {
+      const newRow: Record<string, string> = {};
+      for (const key in row) {
+        newRow[key] = JSON.stringify(row[key]);
+      }
+      return newRow;
+    });
+  }, [data]);
+
+  const [detailPosition, setDetailPosition] = useState<[number, number] | null>(
+    null,
+  );
+
   useEffect(() => {
     postMessageWithResponse("getSchema", null).then((schema) => {
       setSchema(schema as DatasetColumn[]);
@@ -23,6 +38,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    setDetailPosition(null);
     postMessageWithResponse("getData", {
       start: pageNum * 10,
       end: (pageNum + 1) * 10,
@@ -39,7 +55,7 @@ const App = () => {
   };
 
   const prevPage = () => {
-    if (pageNum === 0 || data.length === 0) {
+    if (pageNum === 0) {
       return;
     }
     setPageNum(pageNum - 1);
@@ -69,11 +85,31 @@ const App = () => {
             </VSCodeDataGridCell>
           )) ?? null}
         </VSCodeDataGridRow>
-        {data.map((row, i) => (
+        {jsonifiedData.map((row, i) => (
           <VSCodeDataGridRow key={i}>
             {schema?.map((column, j) => (
               <VSCodeDataGridCell key={j} gridColumn={`${j + 1}`}>
-                {JSON.stringify(row[column.name])}
+                {row[column.name].length > 300 ? (
+                  detailPosition !== null &&
+                  detailPosition[0] === i &&
+                  detailPosition[1] === j ? (
+                    <VSCodeTextArea
+                      readOnly={true}
+                      value={row[column.name]}
+                      resize="both"
+                      rows={30}
+                    ></VSCodeTextArea>
+                  ) : (
+                    <div>
+                      {row[column.name].slice(0, 300)}
+                      <VSCodeTag onClick={() => setDetailPosition([i, j])}>
+                        {row[column.name].length - 300} more chars
+                      </VSCodeTag>
+                    </div>
+                  )
+                ) : (
+                  row[column.name]
+                )}
               </VSCodeDataGridCell>
             )) ?? null}
           </VSCodeDataGridRow>
