@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.0.4] - 2024-05-31
 ### Fixed
 
 - Better serialization of BigInt and TypedArray

@@ -2,7 +2,7 @@
   "name": "datasets-viewer",
   "displayName": "Datasets Viewer",
   "description": "A fast and efficient way to view Huggingface datasets in VS Code.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.87.0"
   },
