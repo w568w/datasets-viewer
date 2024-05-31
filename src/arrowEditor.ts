@@ -264,20 +264,37 @@ export class ArrorDatasetViewerProvider
     (BigInt.prototype as any).toJSON = function () {
       return new Number(this);
     };
-    (BigInt64Array.prototype as any).toJSON = function () {
-      const result = [];
-      for (let i = 0; i < this.length; i++) {
-        result.push(this[i].toJSON());
-      }
-      return result;
-    };
-    (Float64Array.prototype as any).toJSON = function () {
-      const result = [];
-      for (let i = 0; i < this.length; i++) {
-        result.push(this[i]);
-      }
-      return result;
-    };
+    for (const bigintArray of [
+      BigInt64Array.prototype,
+      BigUint64Array.prototype,
+    ] as any[]) {
+      bigintArray.toJSON = function () {
+        const result = [];
+        for (let i = 0; i < this.length; i++) {
+          result.push(this[i].toJSON());
+        }
+        return result;
+      };
+    }
+
+    for (const typedArray of [
+      Int8Array.prototype,
+      Uint8Array.prototype,
+      Int16Array.prototype,
+      Uint16Array.prototype,
+      Int32Array.prototype,
+      Uint32Array.prototype,
+      Float32Array.prototype,
+      Float64Array.prototype,
+    ] as any[]) {
+      typedArray.toJSON = function () {
+        const result = [];
+        for (let i = 0; i < this.length; i++) {
+          result.push(this[i]);
+        }
+        return result;
+      };
+    }
     panel.webview.postMessage({
       type: "response",
       requestId,

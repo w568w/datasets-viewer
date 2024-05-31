@@ -8,8 +8,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
-- Better serialization of BigInt, BigInt64Array and Float64Array
-    - We can now correctly parse `Struct` data type with `BigInt`, `BigInt64Array` and `Float64Array` values
+- Better serialization of BigInt ans TypedArray
+    - We can now correctly parse `Struct` data type with `BigInt` or `TypedArray` values
     
 ### Miscellaneous
 
