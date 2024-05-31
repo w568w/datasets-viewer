@@ -1,21 +1,15 @@
 import * as vscode from "vscode";
 import { Disposable } from "./dispose";
 import * as fs from "fs";
-import { RecordBatch, RecordBatchReader, Table, Vector } from "apache-arrow";
+import {
+  DataType,
+  RecordBatch,
+  RecordBatchReader,
+  Table,
+  Vector,
+} from "apache-arrow";
 import webViewHTMLText from "./webview/index.xhtml";
 import { DatasetColumn, DatasetRow } from "./message";
-import {
-  isBigInt64Array,
-  isBigUint64Array,
-  isFloat32Array,
-  isFloat64Array,
-  isInt16Array,
-  isInt32Array,
-  isInt8Array,
-  isUint16Array,
-  isUint32Array,
-  isUint8Array,
-} from "util/types";
 
 class ArrowDatasetDocument extends Disposable implements vscode.CustomDocument {
   public static async create(uri: vscode.Uri): Promise<ArrowDatasetDocument> {
@@ -48,26 +42,12 @@ class ArrowDatasetDocument extends Disposable implements vscode.CustomDocument {
   }
 
   private parseData(data: any): any {
-    const isSpecialArray = (data: any) =>
-      isUint8Array(data) ||
-      isUint16Array(data) ||
-      isUint32Array(data) ||
-      isFloat32Array(data) ||
-      isFloat64Array(data) ||
-      isInt8Array(data) ||
-      isInt16Array(data) ||
-      isInt32Array(data) ||
-      isBigInt64Array(data) ||
-      isBigUint64Array(data);
-
     if (Array.isArray(data)) {
       return data.map((value) => this.parseData(value));
     } else if (data instanceof Vector) {
       return this.parseData(data.toArray());
-    } else if (isSpecialArray(data)) {
-      return this.parseData(Array.from(data));
-    } else if (typeof data === "bigint") {
-      return new Number(data); // FIXME: BigInt is not supported in JSON
+    } else if (DataType.isList(data)) {
+      return this.parseData(data.children);
     }
     return data;
   }
@@ -281,7 +261,28 @@ export class ArrorDatasetViewerProvider
     requestId: number,
     body: any,
   ): void {
-    panel.webview.postMessage({ type: "response", requestId, body });
+    (BigInt.prototype as any).toJSON = function () {
+      return new Number(this);
+    };
+    (BigInt64Array.prototype as any).toJSON = function () {
+      const result = [];
+      for (let i = 0; i < this.length; i++) {
+        result.push(this[i].toJSON());
+      }
+      return result;
+    };
+    (Float64Array.prototype as any).toJSON = function () {
+      const result = [];
+      for (let i = 0; i < this.length; i++) {
+        result.push(this[i]);
+      }
+      return result;
+    };
+    panel.webview.postMessage({
+      type: "response",
+      requestId,
+      body,
+    });
   }
 
   private async onMessage(

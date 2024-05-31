@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Fixed
+
+- Better serialization of BigInt, BigInt64Array and Float64Array
+    - We can now correctly parse `Struct` data type with `BigInt`, `BigInt64Array` and `Float64Array` values
+    
 ### Miscellaneous
 
 - Update dependencies

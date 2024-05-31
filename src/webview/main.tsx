@@ -18,6 +18,9 @@ const App = () => {
   const [data, setData] = useState<DatasetRow[]>([]);
 
   const jsonifiedData = useMemo(() => {
+    (BigInt.prototype as any).toJSON = function () {
+      return new Number(this);
+    };
     return data.map((row) => {
       const newRow: Record<string, string> = {};
       for (const key in row) {
@@ -88,7 +91,13 @@ const App = () => {
         {jsonifiedData.map((row, i) => (
           <VSCodeDataGridRow key={i}>
             {schema?.map((column, j) => (
-              <VSCodeDataGridCell key={j} gridColumn={`${j + 1}`}>
+              <VSCodeDataGridCell
+                key={j}
+                gridColumn={`${j + 1}`}
+                style={{
+                  lineClamp: 3,
+                }}
+              >
                 {row[column.name].length > 300 ? (
                   detailPosition !== null &&
                   detailPosition[0] === i &&
