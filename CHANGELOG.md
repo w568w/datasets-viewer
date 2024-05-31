@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
-- Better serialization of BigInt ans TypedArray
+- Better serialization of BigInt and TypedArray
     - We can now correctly parse `Struct` data type with `BigInt` or `TypedArray` values
     
 ### Miscellaneous
